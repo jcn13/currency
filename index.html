@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://use.fontawesome.com/f0e20a6c70.js"></script>
+  <title>my currency converter app</title>
+</head>
+<body>
+  <header>
+    <h1>Currency app 2017</h1>
+  </header>
+  <section class="main">
+  <div class="container">
+    <div class="inner">
+    <h2>Currency converter</h2>
+      <form id="quote">
+        <p><b>Enter the amount: </b><input id="amount" type="text" placeholder="amount" class="box"></p>
+        <p><b>Currency to exchange: </b><span id="firstCurrency"></span></p>
+        <p><b>Currency you want: </b><span id="secondCurrency"></span></p>
+        <button id="quote">get quote</button>
+      </form>
+      <div id="result"></div>
+    </div>
+  </div>
+  </section>  
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css?family=Monoton|Basic');
+body{
+  margin: 0 auto;
+  padding: 0;
+  background: white;
+  font-family: 'Basic', sans-serif;
+}
+header{
+  background-image: url(../images/money.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: 'Monoton', serif;
+  font-size: 1.5rem;
+  padding: 1rem;    
+  margin: 0 auto;
+  border-bottom: solid 6px darkgreen;
+}
+footer{  
+  background-image: url(../images/money.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: 'Monoton', serif;
+  font-size: 2rem;
+  padding: 1rem;    
+  margin: 0 auto;
+  border-top: solid 6px darkgreen;
+}
+header h1{
+  text-align: center;
+  margin: 0;
+}
+.main{
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+.container{
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding: 1.5rem;
+  margin: 1.5rem;
+  justify-content: center;
+  background-color: darkgray;
+}
+h2{
+  text-align: center;  
+}
+form{
+  width: 100%;
+}
+span{
+  width: 50%;
+  box-sizing: border-box;
+}
+b{
+  width: 50%;
+  box-sizing: border-box;
+}
+p{
+  width: 100%;
+  text-align: center;
+  
+}
+button{
+  margin: 0 25%;
+  width: 50%;  
+}
+#math{
+  margin: 1rem;
+  padding: .5rem;
+  background: white;
+}
+
+@media screen and (max-width: 601px) {
+  body{
+    font-size: .8rem;
+    background: darkgray;
+  }
+  h1{
+    font-size: 1.2rem;
+  }
+  h2{
+    display: none;
+  }
+  .container{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  section{
+    margin: 0;
+  }
+}
