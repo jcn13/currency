@@ -5,9 +5,10 @@ let money
 let firstCurrency
 let secondCurrency
 let currencyDB
+let db
 quote.addEventListener('submit', (e) => { 	
   	e.preventDefault()  	
-  	fecthFunc( input() )
+  	getDB( input() )
 })
 
 function input() {
@@ -15,29 +16,41 @@ function input() {
 	let a = document.getElementById("first")
 	let b = document.getElementById("second")
 	firstCurrency = a[a.selectedIndex].value
-	secondCurrency = b[b.selectedIndex].value 
-	console.log(firstCurrency , secondCurrency)  
+	secondCurrency = b[b.selectedIndex].value	  
 }
 
-function fecthFunc() {
-fetch(`${url}${firstCurrency}`)
-	.then( (res) => res.json() )
-	.then( (data) => {
-	console.log(data)
-	add(data)  
-	})
-	.catch( (e) => console.log(`${e} something is donkin' up your wiz biz`))
+function getDB(){
+  currencyDB = JSON.parse(localStorage.getItem('db'))  
+  if(currencyDB === null){    
+    fecthFunc()
+  } else {        
+    if (currencyDB[0].base == firstCurrency) {
+      math()
+    } else {      
+      localStorage.clear()
+      fecthFunc()
+    }
+  }
 }
 
-function add (data) {
+function fecthFunc() {       
+    fetch(`${url}${firstCurrency}`)
+    	.then( (res) => res.json() )
+    	.then( (data) => {
+      db = data
+      add(db)            
+    	})
+    	.catch( (e) => console.log(`just wrong dude`))      
+}
+
+function add(data) {
     let item = data
     currencyDB = JSON.parse(localStorage.getItem('db'))
     if (currencyDB === null){
         currencyDB = []
     }    
     currencyDB.push(item)    
-    localStorage.setItem('db', JSON.stringify(currencyDB))
-    console.log(currencyDB)     
+    localStorage.setItem('db', JSON.stringify(currencyDB))        
     math()   
     return false
 }
@@ -54,11 +67,14 @@ function addList (data, currency) {
 }
 
 function math (){
+  if(firstCurrency === secondCurrency){
+    alert(`Same currency ${firstCurrency} equals to ${secondCurrency}`)
+  } else {
 	let list = JSON.parse(localStorage.getItem('db')) 
 	answer = (list[0].rates[secondCurrency] * money).toFixed(2)
 	let html = `<div id="math"><p>Your exchange will result in <b>${secondCurrency}$ ${answer}</b></p></div>`
-  document.getElementById('result').innerHTML = html
-  localStorage.clear()  	 	
+  document.getElementById('result').innerHTML = html   
+  } 	 	
 }
 
 addList(currency, 'first')
