@@ -4,8 +4,9 @@ let currency = ['AUD', 'BGN', 'BRL', 'CAD', 'CHF', 'CNY', 'CZK', 'DKK', 'EUR', '
 let money
 let firstCurrency
 let secondCurrency
-let currencyDB
+const currencyDB = new PouchDB('db')
 let db
+let database
 quote.addEventListener('submit', (e) => { 	
   	e.preventDefault()  	
   	getDB( input() )
@@ -16,21 +17,32 @@ function input() {
 	let a = document.getElementById("first")
 	let b = document.getElementById("second")
 	firstCurrency = a[a.selectedIndex].value
-	secondCurrency = b[b.selectedIndex].value	  
+	secondCurrency = b[b.selectedIndex].value	    
 }
 
-function getDB(){
-  currencyDB = JSON.parse(localStorage.getItem('db'))  
-  if(currencyDB === null){    
+function getDB(){ 
+  currencyDB.info().then(function (result) {    
+    if(result.doc_count == 0){    
     fecthFunc()
-  } else {        
-    if (currencyDB[0].base == firstCurrency) {
-      math()
-    } else {      
-      localStorage.clear()
-      fecthFunc()
-    }
-  }
+    } else {           
+      currencyDB.get('0').then((doc) => {        
+        database = doc   
+        if (database['obj'].base == firstCurrency) {
+          math()
+        } else {      
+          currencyDB.get('0').then((doc) => {
+            return currencyDB.remove(doc);
+          }).then(function (result) {
+            fecthFunc()            
+          }).catch(function (err) {
+            console.log(err)
+          })
+        }
+      })
+    }    
+  }).catch(function (err) {
+    console.log(err)
+  })
 }
 
 function fecthFunc() {       
@@ -44,13 +56,11 @@ function fecthFunc() {
 }
 
 function add(data) {
-    let item = data
-    currencyDB = JSON.parse(localStorage.getItem('db'))
-    if (currencyDB === null){
-        currencyDB = []
-    }    
-    currencyDB.push(item)    
-    localStorage.setItem('db', JSON.stringify(currencyDB))        
+    let item = {
+      _id: '0',
+      "obj": data
+    }
+    currencyDB.put(item)           
     math()   
     return false
 }
@@ -70,11 +80,13 @@ function math (){
   if(firstCurrency === secondCurrency){
     alert(`Same currency ${firstCurrency} equals to ${secondCurrency}`)
   } else {
-	let list = JSON.parse(localStorage.getItem('db')) 
-	answer = (list[0].rates[secondCurrency] * money).toFixed(2)
-	let html = `<div id="math"><p>Your exchange will result in <b>${secondCurrency}$ ${answer}</b></p></div>`
-  document.getElementById('result').innerHTML = html   
-  } 	 	
+    currencyDB.get('0').then((doc) => {    
+    database = doc
+  	answer = (database['obj'].rates[secondCurrency] * money).toFixed(2)
+  	let html = `<div id="math"><p>Your exchange will result in <b>${secondCurrency}$ ${answer}</b></p></div>`
+    document.getElementById('result').innerHTML = html         	 	
+    })  
+  }
 }
 
 addList(currency, 'first')

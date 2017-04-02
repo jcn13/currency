@@ -1,6 +1,6 @@
 Currency App
 
-Using Fixer.io api
+Using Fixer.io and PouchDB api
 
 Convert two currency
 
